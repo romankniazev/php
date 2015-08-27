@@ -1,5 +1,26 @@
 <?php
 
+$file = __DIR__ . "/data/product.csv";
+
+if (!file_exists($file)) {
+	die("Где мой файл?");
+}
+
+if (($fp = fopen($file, 'r+')) === false){
+	die("Ошибка открытия файла");
+}
+
+$product =[];
+
+$i = 0;
+
+while (($data = fgetcsv($fp, 1000, ';')) !== false) {
+	if ($i > 0){
+		$product[$data[0]] = $data;
+	}
+	$i++;
+}
+
 $page = $_GET['page'];
 
 switch ($page) {
@@ -19,3 +40,5 @@ switch ($page) {
 		include '404.php';
 		break;
 }
+
+fclose ($file);
